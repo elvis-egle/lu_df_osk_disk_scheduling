@@ -66,25 +66,18 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- CONFIGURATION - ALGORITHM SELECTION -->
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="inputAlgorithmSelect">Algorithm</label>
-                                <select id="algorithmSelect" class="selectpicker form-control">
-                                    <option value="fcfs">FCFS (First Come, First Served)</option>
-                                    <option value="sstf">SSTF (Shortest Seek Time First)</option>
-                                    <option value="scan">Elevator (SCAN)</option>
-                                    <option value="cscan">Circular SCAN (C-SCAN)</option>
-                                    <option value="look">LOOK</option>
-                                    <option value="clook">C-LOOK</option>
-                                </select>
-                            </div>
-                        </div>
                         <!-- CONFIGURATION - TRACK SIZE INPUT -->
                         <div class="row">
                             <div class="form-group">
                                 <label for="inputTrackSize">Track size (min. 10)</label>
-                                <input id="inputTrackSize" type="number" min="10" class="form-control" value="10">
+                                <input id="inputTrackSize" type="number" min="10" class="form-control" value="100">
+                            </div>
+                        </div>
+                        <!-- CONFIGURATION - STARTING TRACK INPUT -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputStartingTrack">Starting track (between 0 and [track size - 1])</label>
+                                <input id="inputStartingTrack" type="number" min="0" class="form-control" value="0">
                             </div>
                         </div>
                         <!-- CONFIGURATION - QUEUE GENERATION -->
@@ -99,7 +92,7 @@
                                 </select>
                                 <div class="input-group">
                                     <div class="input-group-addon">Count</div>
-                                    <input id="inputGenerateCount" type="number" min="1" class="form-control" value="1">
+                                    <input id="inputGenerateCount" type="number" min="1" class="form-control" value="10">
                                 </div>
                                 <div id="animationControls" class="btn-group btn-group-justified" role="group" aria-label="...">
                                     <div class="btn-group" role="group">
@@ -113,6 +106,14 @@
                             <div class="form-group">
                                 <label for="inputSeekPositionQueue">Seek position queue</label>
                                 <textarea id="inputSeekPositionQueue" class="form-control" rows="3"></textarea>
+                                <div class="alert alert-danger" id="alertQueueError">
+                                    <button type="button" class="close" data-hide="alert">x</button>
+                                    <strong>Error! Invalid format or values...</strong>
+                                    <ul>
+                                        <li>Input field must be filled with whole, positive numbers separated by commas</li>
+                                        <li>Numbers cannot be greater than track size</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
