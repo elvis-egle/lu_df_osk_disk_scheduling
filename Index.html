@@ -1,48 +1,149 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disk Scheduling algorithms</title>
-    
+
     <!-- STYLESHEETS / CSS LINKING -->
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-select.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/site.css" />
 </head>
+
 <body>
     <!-- NAVBAR -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#main">Disk scheduling algorithms</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#main">Disk scheduling algorithms</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="Index.html">Index</a></li>
+                    <li><a href="https://github.com/azeroc/lu_df_osk_disk_scheduling">Source</a></li>
+                    <li><a href="About.html">About</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#main">Index</a></li>
-            <li><a href="https://github.com/azeroc/lu_df_osk_disk_scheduling">Source</a></li>
-            <li><a href="#contact">About</a></li>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
     </nav>
-    
-    TODO CONTENT
-	
-	<canvas id="test_canvas" style="display: block; margin: 20px auto;" width="640" height="480"></canvas>
-	
+
+    <div class="container">
+        <div class="row">
+            <!-- CONTROL PANEL -->
+            <div id="controlPanel" class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span>Control panel</span>
+                        <i class="glyphicon glyphicon-wrench pull-right"></i>
+                    </div>
+                    <div class="panel-body">
+                        <!-- ANIMATION CONTROLS -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Animation controls</label>
+                                <div id="animationControls" class="btn-group btn-group-justified" role="group" aria-label="...">
+                                    <div class="btn-group" role="group">
+                                        <button id="btnStart" type="button" class="btn btn-default">Start</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnPause" type="button" class="btn btn-default">Pause</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnContinue" type="button" class="btn btn-default">Continue</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnReset" type="button" class="btn btn-default">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- CONFIGURATION - ALGORITHM SELECTION -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputAlgorithmSelect">Algorithm</label>
+                                <select id="algorithmSelect" class="selectpicker form-control">
+                                    <option value="fcfs">FCFS (First Come, First Served)</option>
+                                    <option value="sstf">SSTF (Shortest Seek Time First)</option>
+                                    <option value="scan">Elevator (SCAN)</option>
+                                    <option value="cscan">Circular SCAN (C-SCAN)</option>
+                                    <option value="look">LOOK</option>
+                                    <option value="clook">C-LOOK</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- CONFIGURATION - TRACK SIZE INPUT -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputTrackSize">Track size (min. 10)</label>
+                                <input id="inputTrackSize" type="number" min="10" class="form-control" value="10">
+                            </div>
+                        </div>
+                        <!-- CONFIGURATION - QUEUE GENERATION -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputSeekPositionQueueGenSelect">Seek position queue generation (optional)</label>
+                                <select id="inputSeekPositionQueueGenSelect" class="selectpicker form-control">
+                                    <option value="unsorted">Unsorted</option>
+                                    <option value="sorted">Sorted</option>
+                                    <option value="rsorted">Reverse-sorted</option>
+                                    <option value="backnforth">Back and forth</option>
+                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-addon">Count</div>
+                                    <input id="inputGenerateCount" type="number" min="1" class="form-control" value="1">
+                                </div>
+                                <div id="animationControls" class="btn-group btn-group-justified" role="group" aria-label="...">
+                                    <div class="btn-group" role="group">
+                                        <button id="btnGenerateQueue" type="button" class="btn btn-default">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- CONFIGURATION - QUEUE INPUT -->
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputSeekPositionQueue">Seek position queue</label>
+                                <textarea id="inputSeekPositionQueue" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CANVAS -->
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Disk scheduling animation canvas</div>
+                    <div class="panel-body">
+                        <canvas id="test_canvas" style="display: block; margin: 20px auto;" width="640" height="480"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT LINKING -->
     <script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="./js/common.js"></script>
-	<script type="text/javascript" src="./js/main.js"></script>
-	<script type="text/javascript" src="./js/algorithms.js"></script>
-	<script type="text/javascript" src="./js/animations.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/algorithms.js"></script>
+    <script type="text/javascript" src="./js/animations.js"></script>
+    <script>
+        $(function() {
+            mainInit();
+        });
+    </script>
 </body>
+
 </html>

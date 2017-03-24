@@ -1,3 +1,40 @@
 body {
     padding-top: 70px;
 }
+
+#animationControls .btn-group {
+    float: left;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 900px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 1200px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1500px;
+    }
+    #animationControls .btn-group {
+        float: none;
+        width: 1%;
+    }
+}
+
+#controlPanel .panel-body {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#controlPanel .form-group .radio {
+    margin-top: 0px;
+    margin-left: 10px;
+}
