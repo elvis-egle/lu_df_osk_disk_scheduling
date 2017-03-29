@@ -10,7 +10,7 @@ var last_time = null;
 function mainInit() {
     console.log("[DEBUG] mainInit() - begin");
     uiInit();
-    update();
+    window.requestAnimationFrame(animUpdate);
     console.log("[DEBUG] mainInit() - end");
 }
 
@@ -55,6 +55,8 @@ function uiInit() {
             $("#inputStartingTrack").val(trackSize - 1);
         }
     });
+	
+	generateSeekPositions();
 
     console.log("[DEBUG] uiInit() - end");
 }
@@ -88,7 +90,7 @@ function startAnimation() {
     // Get config data if needed
     var data = getConfigData();
 
-    // Start animation code/function here...
+    animStart(data);
 
     // Update button states
     animationControlsLock(true, false, true, false);
@@ -102,10 +104,7 @@ function pauseAnimation() {
     // Lock button states before handling state transition
     animationControlsLock(true, true, true, true);
 
-    // Get config data if needed
-    var data = getConfigData();
-
-    // Pause animation code/function here...
+    animSetPaused(true);
 
     // Update button states
     animationControlsLock(true, true, false, false);
@@ -118,12 +117,9 @@ function continueAnimation() {
 
     // Lock button states before handling state transition
     animationControlsLock(true, true, true, true);
-
-    // Get config data if needed
-    var data = getConfigData();
-
-    // Continue animation code/function here...
-
+	
+	animSetPaused(false);
+	
     // Update button states
     animationControlsLock(true, false, true, false);
     console.log("[DEBUG] continueAnimation() - end");
@@ -141,11 +137,8 @@ function resetAnimation() {
     $("#btnPause").prop("disabled", true);
     $("#btnContinue").prop("disabled", true);
     $("#btnReset").prop("disabled", true);
-
-    // Get config data if needed
-    var data = getConfigData();
-
-    // Reset animation code/function here...
+	
+	animReset();
 
     // Unlock configuration UI
     configurationLock(false);
