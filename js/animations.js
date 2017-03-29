@@ -4,12 +4,38 @@ var anim_data = null;
 
 var anim_track_size, anim_track_start;
 
+var anim_colors = [
+	'red',
+	'orange',
+	'yellow',
+	'green',
+	'blue',
+	'indigo',
+	'violet'
+];
+
 function animSetup(config) {
 	anim_track_size = config.trackSize;
 	anim_track_start = config.trackStart;
-	anim_data = config.seekQueue;
 	
-	// calculate results for all algorithms and put them in anim_data
+	anim_data = [];
+	
+	var color_index = 0;
+	for (var algo_id in algos) {
+		var algo_info = algos[algo_id];
+		
+		var processed_queue = algo_info.func(anim_track_size, anim_track_start, config.seekQueue);
+		if (processed_queue != null) {
+			var algo_data = {
+				id: algo_id,
+				info: algo_info,
+				queue: processed_queue,
+				color: anim_colors[color_index++]
+			};
+			
+			anim_data.push(algo_data);	
+		}
+	}
 }
 
 function animStart(config) {
@@ -67,33 +93,78 @@ function render(t, dt, canvas_width, canvas_height) {
 	
     context.strokeRect(0, 0, canvas_width, canvas_height);
 	
+	var radius_initial = 4;
+	
 	var padding = 20;
 	var line_y = padding * 3 / 2;
+	var start_x = 0;
 	
 	drawLine(padding, line_y, canvas_width - padding, line_y);
 	
-	for (var notch_index = 0; notch_index < anim_track_size; notch_index++) {
-		var notch_x = padding + notch_index * (canvas_width - 2 * padding) / (anim_track_size - 1);
+	var segment_width = (canvas_width - 2 * padding) / (anim_track_size - 1);
+	
+	for (var track_index = 0; track_index < anim_track_size; track_index++) {
+		var notch_x = padding + track_index * segment_width;
 		
+		// TODO: draw text for each notch?
 		drawLine(notch_x, line_y - padding / 2, notch_x, line_y + padding / 2);
 		
-		if (notch_index == anim_track_start) {
-			fillCircle(notch_x, line_y, 4);
+		if (track_index == anim_track_start) {
+			drawCircle(notch_x, line_y, radius_initial);
+			start_x = notch_x;
+		}
+	}
+	
+	for (var algo_index in anim_data) {
+		var node_y = line_y;
+		
+		var prev_node_pos = anim_track_start;
+		
+		var prev_x = start_x;
+		var prev_y = line_y;
+			
+		var radius_incr = 2;
+		var radius = radius_initial;
+		
+		var algo_data = anim_data[algo_index];
+		
+		// TODO: calculate entire path in animSetup?
+			
+		for (var i in algo_data.queue) {
+			var pos = algo_data.queue[i].pos;
+			
+			// TODO: make sure this fits into canvas_height?
+			node_y += 0.25 * segment_width * Math.abs(pos - prev_node_pos);
+			
+			if (prev_node_pos == pos) {
+				radius += radius_incr;
+			}
+			else {
+				radius = radius_initial;
+			}
+			
+			// TODO: move this x calculation to a separate function
+			var node_x = padding + pos * segment_width;
+			
+			context.strokeStyle = algo_data.color;
+			drawLine(prev_x, prev_y, node_x, node_y);
+			drawCircle(node_x, node_y, radius);
+			
+			prev_node_pos = pos;
+			
+			prev_x = node_x;
+			prev_y = node_y;
 		}
 	}
 	
     context.font = "9px Courier New";
     context.fillText(round(dt * 1000, 2) + "ms", 0, 0);
-
-    var f = Math.sin(t * Math.PI * 2 * 0.1) * 0.5 + 0.5;
-
-    context.fillStyle = "green";
-    context.fillRect(canvas_width * f - 10, 20, 30, 40);
 }
 
-function fillCircle(x, y, radius) {
+function drawCircle(x, y, radius) {
+	context.beginPath();
 	context.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI);
-	context.fill();
+	context.stroke();
 }
 
 function drawLine(ax, ay, bx, by) {

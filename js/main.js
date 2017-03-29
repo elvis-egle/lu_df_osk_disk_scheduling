@@ -49,11 +49,14 @@ function uiInit() {
         var trackSize = $("#inputTrackSize").val();
         var startingTrack = $("#inputStartingTrack").val();
 
-        if (startingTrack < 0) {
+		
+        /* TODO: disabled for now due to weird bug
+		if (startingTrack < 0) {
             $("#inputStartingTrack").val("0");
         } else if (startingTrack >= trackSize) {
             $("#inputStartingTrack").val(trackSize - 1);
         }
+		*/
     });
 	
 	generateSeekPositions();

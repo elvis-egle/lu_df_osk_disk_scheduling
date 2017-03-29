@@ -1,6 +1,8 @@
 # LU DF (University of Latvia, Computer Faculty) assignment: Disk Scheduling algorithm visualization
 Disk scheduling algorithms (FCFS, SSTF, SCAN, C-SCAN, LOOK) visualized with HTML5/CSS/JS technologies. 
 
+http://www.cs.iit.edu/~cs561/cs450/disksched/disksched.html
+
 ## Notes
 * Can be run locally with a browser (doesn't require a web server)
 * Uses HTML5 canvas for animations and visualization of the algorithms
