@@ -87,10 +87,7 @@ function startAnimation() {
         return;
     }
 
-    // Get config data if needed
-    var data = getConfigData();
-
-    animStart(data);
+    animStart(getConfigData());
 
     // Update button states
     animationControlsLock(true, false, true, false);
