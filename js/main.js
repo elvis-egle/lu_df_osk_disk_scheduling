@@ -259,7 +259,7 @@ function getConfigData() {
     data.trackSize = $("#inputTrackSize").val();
 
     // Fetch track starting position
-    data.trackStart = $("#inputStartingTrack").val();
+    data.trackStart = parseInt($("#inputStartingTrack").val());
 
     // Queue
     data.seekQueue = [];

@@ -24,7 +24,7 @@ function animSetup(config) {
 	for (var algo_id in algos) {
 		var algo_info = algos[algo_id];
 		
-		var processed_queue = algo_info.func(anim_track_size, anim_track_start, config.seekQueue);
+		var processed_queue = algo_info.func(anim_track_start, anim_track_size, config.seekQueue);
 		if (processed_queue != null) {
 			var algo_data = {
 				id: algo_id,
